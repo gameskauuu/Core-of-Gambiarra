@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Core of gambiarra</title>
+    <!-- Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+      import { getFirestore, collection, addDoc, getDocs, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
+
+      // Config do Firebase (substitua pelos seus valores)
+      const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_PROJECT.firebaseapp.com",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      window.db = db;
+      window.collection = collection;
+      window.addDoc = addDoc;
+      window.getDocs = getDocs;
+      window.doc = doc;
+      window.getDoc = getDoc;
+    </script>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #26394d;
+      }
+
+      /* Topbar */
+      .topbar {
+        background: #191b47;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #ccc;
+      }
+
+      /* Layout */
+      .container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .feed {
+        width: 600px;
+      }
+
+      .sidebar {
+        width: 300px;
+        margin-left: 20px;
+      }
+
+      /* Post */
+      .post {
+        background: white;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+
+      .post-title {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .post-content {
+        margin-top: 10px;
+      }
+
+      /* Sidebar */
+      .box {
+        background: white;
+        padding: 15px;
+        border-radius: 5px;
+      }
+
+      button {
+        margin-top: 10px;
+        padding: 8px;
+        width: 100%;
+        background: #1e3869;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+      }
+
+      .topbar button {
+        padding: 10px 30px;
+        width: auto;
+        font-size: 14px;
+      }
+      .topbar input {
+        padding: 10px 200px;
+        width: auto;
+        font-size: 25px;
+        text-align: center;
+        margin: 10px 0px 10px 0px;
+      }
+      .logo {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: #00eaff;
+        text-shadow: 0 0 10px #00eaff;
+        text-align: center;
+        letter-spacing: 2px;
+        font-family: Arial, Helvetica, sans-serif;
+        background: radial-gradient(
+          circle,
+          #0a0925 20%,
+          #1c1a46 50%,
+          #3a38a0 100%
+        );
+        padding: 15px;
+        border-radius: 50%;
+        width: 200px;
+        height: 50px;
+        border-color: black;
+        border-width: 5px;
+        border-style: solid;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="logo">
+        CORE
+        <span>OF</span>
+        GAMBIARRA
+      </div>
+      <input type="text" placeholder="Buscar..." />
+      <button>Logoff</button>
+    </div>
+
+    <div class="container">
+      <div class="feed" id="feed">
+        <!-- Posts vão aqui -->
+      </div>
+
+      <div class="sidebar">
+        <div class="box">
+          <h3>Sobre</h3>
+          <p>Plataforma de estudos de TI 🚀</p>
+          <button>Criar Post</button>
+          <button id="criarPerfil">Criar Perfil</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+      
+      const perfis = [
+        {
+          nome: "caveira games",
+          descricao:
+            "Especialista em assistencia tecnica e um grande fã de karrot",
+        },
+        {
+          nome: "Gameskauuu",
+          descricao:
+            "além de garoto de programa e gamer próficional (top 10 do bairro). é um dos maiores usuarios de gambiarra do brasil",
+        },
+        {
+          nome: "Ronaldo",
+          descricao:
+            "Por favor parem de me mandar o meme Ronaldo toda vez na minha dm >:(",
+        },
+      ];
+      const posts = [
+        {
+          titulo: "Aprendi JavaScript hoje!",
+          conteudo: "Hoje estudei funções e arrays.",
+        },
+        {
+          titulo: "Dica de redes",
+          conteudo: "Subnetting é importante!",
+        },
+      ];
+
+      const feed = document.getElementById("feed");
+
+      // Função para renderizar posts
+      function renderPosts(postsList) {
+        feed.innerHTML = ""; // Limpa o feed
+        postsList.forEach((post, index) => {
+          const div = document.createElement("div");
+          div.classList.add("post");
+          div.innerHTML = `
+            <a href="post.html?id=${index}" style="text-decoration: none; color: inherit;">
+              <div class="post-title">${post.titulo}</div>
+              <div class="post-content">${post.conteudo}</div>
+            </a>
+          `;
+          feed.appendChild(div);
+        });
+      }
+
+      // Função para renderizar perfis (adiciona ao feed como posts simples)
+      function renderPerfis(perfisList) {
+        perfisList.forEach((perfil) => {
+          const div = document.createElement("div");
+          div.classList.add("post");
+          div.innerHTML = `
+            <a href="perfil.html?nome=${encodeURIComponent(perfil.nome)}" style="text-decoration: none; color: inherit;">
+              <div class="post-title">Perfil: ${perfil.nome}</div>
+              <div class="post-content">${perfil.descricao}</div>
+            </a>
+          `;
+          feed.appendChild(div);
+        });
+      }
+
+      // Evento de busca
+      const searchInput = document.querySelector('input[type="text"]');
+      searchInput.addEventListener("input", function () {
+        const query = this.value.toLowerCase().trim();
+        if (query === "") {
+          // Se vazio, mostra tudo
+          renderPosts(posts);
+          renderPerfis(perfis);
+          return;
+        }
+
+        // Filtra posts
+        const filteredPosts = posts.filter(
+          (post) =>
+            post.titulo.toLowerCase().includes(query) ||
+            post.conteudo.toLowerCase().includes(query),
+        );
+
+        // Filtra perfis
+        const filteredPerfis = perfis.filter(
+          (perfil) =>
+            perfil.nome.toLowerCase().includes(query) ||
+            perfil.descricao.toLowerCase().includes(query),
+        );
+
+        // Limpa e renderiza resultados
+        feed.innerHTML = "<h3>Resultados da Busca:</h3>";
+        if (filteredPosts.length > 0) {
+          renderPosts(filteredPosts);
+        }
+        if (filteredPerfis.length > 0) {
+          renderPerfis(filteredPerfis);
+        }
+        if (filteredPosts.length === 0 && filteredPerfis.length === 0) {
+          feed.innerHTML += "<p>Nenhum resultado encontrado.</p>";
+        }
+      });
+
+      // Renderiza tudo inicialmente
+      renderPosts(posts);
+      renderPerfis(perfis);
+    </script>
+  </body>
+</html>

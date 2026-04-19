@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="index.js"></script>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #191b47;
+      }
+      div {
+        background-color: rgba(0, 0, 0, 0.8);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 75px;
+        border-radius: 20px;
+        color: white;
+        font-size: 30px;
+      }
+      input {
+        padding: 15px;
+        border: none;
+        outline: none;
+        font-size: 15px;
+      }
+      button {
+        background-color: #069dab;
+        border: none;
+        padding: 15px;
+        border-radius: 10px;
+        width: 225px;
+      }
+      button:hover {
+        background-color: #0bc9db;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h3>faça o login</h3>
+      <form id="loginForm">
+        <input
+          type="text"
+          name="email"
+          id="email"
+          placeholder="digite seu email"
+          required
+        />
+        <br /><br />
+        <input
+          type="password"
+          name="senha"
+          id="senha"
+          placeholder="digite sua senha"
+          required
+        />
+        <br /><br />
+        <button type="submit">Entrar</button>
+        <span id="emailError" style="color: red"></span>
+        <span id="senhaError" style="color: red"></span>
+      </form>
+    </div>
+  </body>
+</html>
