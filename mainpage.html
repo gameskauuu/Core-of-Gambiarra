@@ -7,17 +7,6 @@
     <script type="module">
       import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
       import { getFirestore, collection, addDoc, getDocs, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
-
-      // Config do Firebase (substitua pelos seus valores)
-      const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT.appspot.com",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID"
-      };
-
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
@@ -132,6 +121,20 @@
         border-width: 5px;
         border-style: solid;
       }
+      .logoff {
+        margin-top: 10px;
+        padding: 5px;
+        width: 80px;
+        background: #1e3869;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        height: 35px;
+        text-align: center;
+        text-decoration:none;
+        justify-content: center;
+        display: flex;
+      }
     </style>
   </head>
   <body>
@@ -142,7 +145,7 @@
         GAMBIARRA
       </div>
       <input type="text" placeholder="Buscar..." />
-      <button>Logoff</button>
+      <a href="index.html" class="logoff">logoff</a>
     </div>
 
     <div class="container">
@@ -160,8 +163,7 @@
       </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+    <script>
       
       const perfis = [
         {
